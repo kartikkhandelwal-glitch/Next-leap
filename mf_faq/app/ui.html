@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groww Mutual Fund FAQ</title>
+<style>
+  :root {
+    --bg: #f7f8fa; --card: #ffffff; --ink: #16181d; --muted: #5c6270;
+    --line: #e3e6ec; --accent: #00b386; --warn: #8a5a00; --warn-bg: #fff6e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#101216; --card:#181b21; --ink:#e8eaee; --muted:#9aa1ad;
+            --line:#282c34; --accent:#00d29b; --warn:#f0c46a; --warn-bg:#2a2113; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 28px 18px 60px; }
+  header h1 { font-size: 21px; margin: 0 0 6px; letter-spacing: -.01em; }
+  header p.sub { margin: 0 0 4px; color: var(--muted); }
+  .badge { display:inline-block; margin: 10px 0 0; padding: 5px 10px; border-radius: 999px;
+           background: var(--warn-bg); color: var(--warn); font-size: 12.5px; font-weight: 600; }
+  .examples { margin: 20px 0 8px; }
+  .examples span { display:block; font-size:12.5px; text-transform:uppercase;
+                   letter-spacing:.06em; color:var(--muted); margin-bottom:8px; }
+  .examples button { display:block; width:100%; text-align:left; margin-bottom:8px;
+                     padding:10px 12px; border:1px solid var(--line); border-radius:9px;
+                     background:var(--card); color:var(--ink); font:inherit; cursor:pointer; }
+  .examples button:hover { border-color: var(--accent); }
+  form { display:flex; gap:8px; margin: 18px 0 6px; position: sticky; bottom: 0;
+         background: var(--bg); padding: 10px 0; }
+  input[type=text] { flex:1; padding:11px 13px; border:1px solid var(--line); border-radius:9px;
+                     background:var(--card); color:var(--ink); font:inherit; }
+  input[type=text]:focus { outline:2px solid var(--accent); outline-offset:-1px; }
+  button.send { padding:11px 18px; border:0; border-radius:9px; background:var(--accent);
+                color:#04231b; font:inherit; font-weight:600; cursor:pointer; }
+  button.send[disabled] { opacity:.55; cursor:default; }
+  .msg { border:1px solid var(--line); border-radius:11px; background:var(--card);
+         padding:14px 16px; margin-bottom:12px; }
+  .msg.q { background:transparent; border:0; padding:2px 2px 6px; color:var(--muted); font-weight:600; }
+  .msg .body { margin:0 0 10px; }
+  .cite { font-size:13px; border-top:1px dashed var(--line); padding-top:9px; }
+  .cite a { color:var(--accent); text-decoration:none; word-break:break-all; }
+  .cite a:hover { text-decoration:underline; }
+  .cite .pub { color:var(--muted); }
+  .stamp { font-size:12px; color:var(--muted); margin-top:6px; }
+  .msg[data-intent$="refusal"], .msg[data-intent="out_of_scope"] { border-left:3px solid var(--warn); }
+  footer { margin-top:26px; font-size:12.5px; color:var(--muted); border-top:1px solid var(--line);
+           padding-top:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Groww Mutual Fund FAQ</h1>
+    <p class="sub" id="welcome">Ask a factual question about a Groww Mutual Fund scheme. Every answer cites one official source.</p>
+    <p class="badge">Facts-only. No investment advice.</p>
+  </header>
+
+  <div class="examples" id="examples">
+    <span>Try one of these</span>
+    <button type="button">What is the exit load of Groww Value Fund?</button>
+    <button type="button">What is the lock-in period for Groww ELSS Tax Saver Fund?</button>
+    <button type="button">How do I download my mutual fund capital gains statement?</button>
+  </div>
+
+  <div id="thread" aria-live="polite"></div>
+
+  <form id="ask">
+    <input type="text" id="q" autocomplete="off" placeholder="e.g. Minimum SIP for Groww Large Cap Fund"
+           aria-label="Your question">
+    <button class="send" type="submit">Ask</button>
+  </form>
+
+  <footer id="scope"></footer>
+</div>
+
+<script>
+const thread = document.getElementById('thread');
+const input = document.getElementById('q');
+const form = document.getElementById('ask');
+const sendBtn = form.querySelector('button.send');
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+
+function renderAnswer(reply) {
+  const card = el('div', 'msg');
+  card.dataset.intent = reply.intent || 'fact';
+  card.appendChild(el('p', 'body', reply.answer));
+
+  if (reply.citation) {
+    const cite = el('div', 'cite');
+    cite.appendChild(el('strong', null, 'Source: '));
+    const a = el('a', null, reply.citation.title);
+    a.href = reply.citation.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    cite.appendChild(a);
+    cite.appendChild(el('span', 'pub', ' — ' + reply.citation.publisher));
+    cite.appendChild(el('div', 'pub', reply.citation.url));
+    card.appendChild(cite);
+  }
+  card.appendChild(el('div', 'stamp',
+    'Last updated from sources: ' + reply.last_updated_from_sources + ' · ' + reply.disclaimer));
+  thread.appendChild(card);
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function ask(question) {
+  if (!question.trim()) return;
+  thread.appendChild(el('div', 'msg q', question));
+  input.value = '';
+  sendBtn.disabled = true;
+  try {
+    const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question })
+    });
+    renderAnswer(await res.json());
+  } catch (err) {
+    renderAnswer({
+      answer: 'Could not reach the assistant. Is the server still running?',
+      last_updated_from_sources: '—', disclaimer: 'Facts-only. No investment advice.'
+    });
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+
+form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); });
+document.querySelectorAll('#examples button')
+  .forEach(b => b.addEventListener('click', () => ask(b.textContent)));
+
+fetch('/api/scope').then(r => r.json()).then(s => {
+  document.getElementById('scope').textContent =
+    'Scope: ' + s.amc + ' — ' + s.schemes.join(', ') + '. ' +
+    s.sources + ' official sources (AMC / SEBI / AMFI / RTA). ' +
+    'No PII is accepted or stored. No performance figures are computed.';
+}).catch(() => {});
+</script>
+</body>
+</html>

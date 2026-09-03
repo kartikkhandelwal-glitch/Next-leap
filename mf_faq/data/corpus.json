@@ -1,0 +1,606 @@
+{
+  "meta": {
+    "product": "Groww",
+    "amc": "Groww Mutual Fund (Groww Asset Management Ltd.)",
+    "corpus_version": "1.0.0",
+    "last_updated_from_sources": "2026-09-03",
+    "scheme_scope": [
+      "Groww Large Cap Fund",
+      "Groww Value Fund",
+      "Groww ELSS Tax Saver Fund",
+      "Groww Nifty Total Market Index Fund"
+    ],
+    "note": "Facts below were captured from the official pages listed in `sources`. Scheme terms (exit load, benchmark, minimums, lock-in) change only by addendum; TER and NAV change continuously and are therefore never hard-coded here - those questions are answered with the live official disclosure link. Re-run tools/refresh_corpus.py to re-capture from source."
+  },
+  "sources": [
+    {
+      "id": "S01",
+      "url": "https://www.growwmf.in/mutual-funds/groww-large-cap-fund-direct-growth",
+      "title": "Groww Large Cap Fund - Direct Growth (scheme page)",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Scheme page",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S02",
+      "url": "https://www.growwmf.in/mutual-funds/groww-value-discovery-fund-direct-growth",
+      "title": "Groww Value Fund - Direct Growth (scheme page)",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Scheme page",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S03",
+      "url": "https://www.growwmf.in/mutual-funds/groww-elss-tax-saver-fund-direct-growth",
+      "title": "Groww ELSS Tax Saver Fund - Direct Growth (scheme page)",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Scheme page",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S04",
+      "url": "https://www.growwmf.in/mutual-funds/groww-nifty-total-market-index-fund-direct-growth",
+      "title": "Groww Nifty Total Market Index Fund - Direct Growth (scheme page)",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Scheme page",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S05",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20Value%20Fund.pdf",
+      "title": "Scheme Information Document - Groww Value Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "SID",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S06",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20ELSS%20Tax%20Saver%20Fund.pdf",
+      "title": "Scheme Information Document - Groww ELSS Tax Saver Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "SID",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S07",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20Nifty%20Total%20Market%20Index%20Fund.pdf",
+      "title": "Scheme Information Document - Groww Nifty Total Market Index Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "SID",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S08",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/KIM/KIM_Groww%20ELSS%20Tax%20Saver%20Fund.pdf",
+      "title": "Key Information Memorandum - Groww ELSS Tax Saver Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "KIM",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S09",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SSD/Groww%20Value%20Fund/GrowwValueFundSSD.pdf",
+      "title": "Scheme Summary Document - Groww Value Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Scheme Summary Document",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S10",
+      "url": "https://www.growwmf.in/downloads/expense-ratio",
+      "title": "Expense Ratio (TER) disclosure - Groww Mutual Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Fee/charges disclosure",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S11",
+      "url": "https://www.growwmf.in/downloads/sid",
+      "title": "Downloads - Scheme Information Documents",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Document index",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S12",
+      "url": "https://www.growwmf.in/downloads/fact-sheet",
+      "title": "Downloads - Monthly Factsheets",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Document index",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S13",
+      "url": "https://assets-netstorage.growwmf.in/compliance_docs/Downloads/Fact%20Sheet/2026%20-%202027/Monthly%20Factsheet%20-%20April%202026.pdf",
+      "title": "Monthly Factsheet - April 2026",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Factsheet",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S14",
+      "url": "https://www.growwmf.in/nav",
+      "title": "Latest NAV - Groww Mutual Fund",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "NAV disclosure",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S15",
+      "url": "https://www.growwmf.in/statutory-disclosure/portfolio",
+      "title": "Statutory Disclosures - Scheme portfolios",
+      "publisher": "Groww Mutual Fund (AMC)",
+      "doc_type": "Statutory disclosure",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S16",
+      "url": "https://groww.in/help/mutual-funds/reports/how-to-download-capital-gain-report--50",
+      "title": "How to download capital gain report (Groww Help)",
+      "publisher": "Groww (platform)",
+      "doc_type": "Help / statement guide",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S17",
+      "url": "https://groww.in/help/my-account/ma-others/where-can-i-get-the-tax-proof-for-section-80c",
+      "title": "Where can I get the tax proof for Section 80C? (Groww Help)",
+      "publisher": "Groww (platform)",
+      "doc_type": "Help / statement guide",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S18",
+      "url": "https://www.amfiindia.com/online-center/download-cas",
+      "title": "Download Consolidated Account Statement (CAS)",
+      "publisher": "AMFI",
+      "doc_type": "Statement guide",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S19",
+      "url": "https://www.camsonline.com/Investors/Statements/Consolidated-Account-Statement",
+      "title": "Consolidated Account Statement",
+      "publisher": "CAMS (SEBI-registered RTA)",
+      "doc_type": "Statement guide",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S20",
+      "url": "https://www.mfcentral.com/",
+      "title": "MF Central - single window for mutual fund investors",
+      "publisher": "CAMS + KFintech, in association with AMFI",
+      "doc_type": "Statement guide",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S21",
+      "url": "https://investor.sebi.gov.in/riskometer.html",
+      "title": "Understanding the Riskometer",
+      "publisher": "SEBI Investor Website",
+      "doc_type": "Investor education",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S22",
+      "url": "https://www.sebi.gov.in/legal/circulars/oct-2020/circular-on-product-labeling-in-mutual-fund-schemes-risk-o-meter_47796.html",
+      "title": "Circular on Product Labeling in Mutual Fund schemes - Risk-o-meter",
+      "publisher": "SEBI",
+      "doc_type": "Circular",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S23",
+      "url": "https://investor.sebi.gov.in/elss.html",
+      "title": "A Guide to ELSS (Equity Linked Savings Scheme)",
+      "publisher": "SEBI Investor Website",
+      "doc_type": "Investor education",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S24",
+      "url": "https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio",
+      "title": "Expense Ratio - AMFI Knowledge Center",
+      "publisher": "AMFI",
+      "doc_type": "Investor education",
+      "captured_on": "2026-09-03"
+    },
+    {
+      "id": "S25",
+      "url": "https://www.amfiindia.com/ter-of-mf-schemes",
+      "title": "Total Expense Ratio (TER) of Mutual Fund Schemes",
+      "publisher": "AMFI",
+      "doc_type": "Fee/charges disclosure",
+      "captured_on": "2026-09-03"
+    }
+  ],
+  "schemes": [
+    {
+      "id": "large_cap",
+      "name": "Groww Large Cap Fund",
+      "aliases": [
+        "groww large cap",
+        "groww largecap",
+        "large cap fund",
+        "largecap fund",
+        "groww bluechip",
+        "groww blue chip",
+        "large cap"
+      ]
+    },
+    {
+      "id": "value",
+      "name": "Groww Value Fund",
+      "aliases": [
+        "groww value",
+        "value fund",
+        "groww value discovery",
+        "value discovery",
+        "value"
+      ]
+    },
+    {
+      "id": "elss",
+      "name": "Groww ELSS Tax Saver Fund",
+      "aliases": [
+        "groww elss",
+        "elss tax saver",
+        "elss",
+        "tax saver",
+        "tax saving fund",
+        "80c fund",
+        "groww tax saver"
+      ]
+    },
+    {
+      "id": "index",
+      "name": "Groww Nifty Total Market Index Fund",
+      "aliases": [
+        "nifty total market",
+        "total market index",
+        "total market",
+        "index fund"
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "F01",
+      "scheme": "large_cap",
+      "attribute": "exit_load",
+      "source_id": "S01",
+      "keywords": "exit load redemption charge redeem switch out penalty within days sell early",
+      "answer": "Groww Large Cap Fund charges an exit load of 1% if units are redeemed or switched out within 7 days from the date of allotment. There is no exit load if redeemed or switched out after 7 days."
+    },
+    {
+      "id": "F02",
+      "scheme": "large_cap",
+      "attribute": "benchmark",
+      "source_id": "S01",
+      "keywords": "benchmark index tri compared against benchmarked",
+      "answer": "The benchmark for Groww Large Cap Fund is the NIFTY 100 - TRI (Total Return Index)."
+    },
+    {
+      "id": "F03",
+      "scheme": "large_cap",
+      "attribute": "riskometer",
+      "source_id": "S01",
+      "keywords": "riskometer risk o meter risk level how risky scheme risk very high",
+      "answer": "The Scheme Riskometer for Groww Large Cap Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."
+    },
+    {
+      "id": "F04",
+      "scheme": "large_cap",
+      "attribute": "minimum_investment",
+      "source_id": "S01",
+      "keywords": "minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees",
+      "answer": "The minimum SIP amount for Groww Large Cap Fund is Rs. 100 and the minimum lumpsum amount is also Rs. 100."
+    },
+    {
+      "id": "F05",
+      "scheme": "large_cap",
+      "attribute": "category",
+      "source_id": "S01",
+      "keywords": "category type of scheme what kind open ended equity large cap classification",
+      "answer": "Groww Large Cap Fund is an open-ended equity scheme predominantly investing in large-cap stocks."
+    },
+    {
+      "id": "F06",
+      "scheme": "value",
+      "attribute": "exit_load",
+      "source_id": "S05",
+      "keywords": "exit load redemption charge redeem switch out penalty within year sell early",
+      "answer": "Groww Value Fund charges an exit load of 1% if units are redeemed or switched out within 1 year from the date of allotment. There is no exit load if redeemed or switched out after 1 year."
+    },
+    {
+      "id": "F07",
+      "scheme": "value",
+      "attribute": "benchmark",
+      "source_id": "S05",
+      "keywords": "benchmark index tri compared against benchmarked",
+      "answer": "The benchmark for Groww Value Fund is the NIFTY 500 - TRI (Total Return Index)."
+    },
+    {
+      "id": "F08",
+      "scheme": "value",
+      "attribute": "riskometer",
+      "source_id": "S02",
+      "keywords": "riskometer risk o meter risk level how risky scheme risk very high",
+      "answer": "The Scheme Riskometer for Groww Value Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."
+    },
+    {
+      "id": "F09",
+      "scheme": "value",
+      "attribute": "minimum_investment",
+      "source_id": "S05",
+      "keywords": "minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees",
+      "answer": "The minimum lumpsum application amount for Groww Value Fund is Rs. 500 and in multiples of Re. 1 thereafter. The minimum SIP amount is Rs. 500."
+    },
+    {
+      "id": "F10",
+      "scheme": "value",
+      "attribute": "category",
+      "source_id": "S05",
+      "keywords": "category type of scheme what kind open ended equity value strategy classification",
+      "answer": "Groww Value Fund is an open-ended equity scheme following a value investment strategy."
+    },
+    {
+      "id": "F11",
+      "scheme": "elss",
+      "attribute": "lock_in",
+      "source_id": "S06",
+      "keywords": "lock in lockin period how long locked cannot redeem three years 3 years withdraw before",
+      "answer": "Groww ELSS Tax Saver Fund has a statutory lock-in period of 3 years from the date of allotment of each unit. Units cannot be redeemed, switched or transferred during the lock-in."
+    },
+    {
+      "id": "F12",
+      "scheme": "elss",
+      "attribute": "exit_load",
+      "source_id": "S06",
+      "keywords": "exit load redemption charge redeem switch out penalty nil",
+      "answer": "The exit load for Groww ELSS Tax Saver Fund is Nil. Because the scheme carries a 3-year statutory lock-in, units can only be redeemed after the lock-in and no exit load applies."
+    },
+    {
+      "id": "F13",
+      "scheme": "elss",
+      "attribute": "benchmark",
+      "source_id": "S06",
+      "keywords": "benchmark index tri compared against benchmarked changed revised bse 500",
+      "answer": "The benchmark for Groww ELSS Tax Saver Fund is the NIFTY 500 - TRI (Total Return Index). It was revised from the BSE 500 TRI with effect from 30 June 2025."
+    },
+    {
+      "id": "F14",
+      "scheme": "elss",
+      "attribute": "riskometer",
+      "source_id": "S03",
+      "keywords": "riskometer risk o meter risk level how risky scheme risk very high",
+      "answer": "The Scheme Riskometer for Groww ELSS Tax Saver Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."
+    },
+    {
+      "id": "F15",
+      "scheme": "elss",
+      "attribute": "minimum_investment",
+      "source_id": "S06",
+      "keywords": "minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees 500",
+      "answer": "The minimum application amount for Groww ELSS Tax Saver Fund is Rs. 500 and in multiples of Rs. 500 thereafter. The minimum SIP amount is also Rs. 500."
+    },
+    {
+      "id": "F16",
+      "scheme": "elss",
+      "attribute": "category",
+      "source_id": "S08",
+      "keywords": "category type of scheme what kind open ended equity linked savings scheme 80c tax classification",
+      "answer": "Groww ELSS Tax Saver Fund is an open-ended Equity Linked Savings Scheme (ELSS) with a statutory lock-in of 3 years and a tax benefit under Section 80C of the Income-tax Act, 1961."
+    },
+    {
+      "id": "F17",
+      "scheme": "index",
+      "attribute": "exit_load",
+      "source_id": "S07",
+      "keywords": "exit load redemption charge redeem switch out penalty within days",
+      "answer": "Groww Nifty Total Market Index Fund charges an exit load of 0.25% if units are redeemed or switched out within 7 days from the date of allotment. There is no exit load after 7 days."
+    },
+    {
+      "id": "F18",
+      "scheme": "index",
+      "attribute": "benchmark",
+      "source_id": "S07",
+      "keywords": "benchmark index tri compared against benchmarked tracks",
+      "answer": "Groww Nifty Total Market Index Fund is benchmarked to the Nifty Total Market Index - TRI, and the scheme seeks to track that index subject to tracking error."
+    },
+    {
+      "id": "F19",
+      "scheme": "index",
+      "attribute": "riskometer",
+      "source_id": "S04",
+      "keywords": "riskometer risk o meter risk level how risky scheme risk very high",
+      "answer": "The Scheme Riskometer for Groww Nifty Total Market Index Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."
+    },
+    {
+      "id": "F20",
+      "scheme": "index",
+      "attribute": "minimum_investment",
+      "source_id": "S07",
+      "keywords": "minimum sip amount minimum investment smallest start with how much rupees 100",
+      "answer": "The minimum SIP amount for Groww Nifty Total Market Index Fund is Rs. 100. The minimum lumpsum amount is stated in the scheme's SID, linked below."
+    },
+    {
+      "id": "F21",
+      "scheme": "index",
+      "attribute": "category",
+      "source_id": "S07",
+      "keywords": "category type of scheme what kind open ended index fund passive classification",
+      "answer": "Groww Nifty Total Market Index Fund is an open-ended index scheme that seeks to achieve a return equivalent to the Nifty Total Market Index - TRI, subject to tracking error."
+    }
+  ],
+  "documents": [
+    {
+      "id": "D01",
+      "scheme": null,
+      "topic": "expense_ratio",
+      "source_id": "S10",
+      "keywords": "expense ratio ter total expense ratio charges fee cost how much charged annual recurring direct regular plan",
+      "answer": "The Total Expense Ratio (TER) is the annual recurring cost charged to a scheme, expressed as a percentage of its assets and reflected in the NAV. Groww Mutual Fund publishes the current TER for every scheme and plan on its expense-ratio page, updated daily; because TER is revised from time to time, this assistant links you to the live figure rather than quoting one that may be stale."
+    },
+    {
+      "id": "D02",
+      "scheme": null,
+      "topic": "expense_ratio_all_amcs",
+      "source_id": "S25",
+      "keywords": "expense ratio ter all schemes amfi industry compare fee list disclosure",
+      "answer": "AMFI publishes the Total Expense Ratio of all mutual fund schemes across AMCs, which mutual funds are required to disclose on a daily basis. Use it as the industry-wide reference for a scheme's current TER."
+    },
+    {
+      "id": "D03",
+      "scheme": null,
+      "topic": "expense_ratio_rules",
+      "source_id": "S24",
+      "keywords": "expense ratio ter limit ter cap maximum limit highest slab slabs regulation 52 sebi rules how much can a scheme charge what is expense ratio meaning explain b30 daily net assets",
+      "answer": "The Total Expense Ratio is the annual recurring cost charged to a scheme, and the maximum a scheme may charge is capped by slabs under Regulation 52 of the SEBI (Mutual Funds) Regulations, based on daily net assets. For equity schemes the slabs start at 2.25% on the first Rs. 500 crore of daily net assets and step down as assets grow."
+    },
+    {
+      "id": "D04",
+      "scheme": null,
+      "topic": "riskometer_meaning",
+      "source_id": "S21",
+      "keywords": "what is riskometer meaning explain levels how many six low moderate high very high understand",
+      "answer": "The Riskometer is a pictorial scale that shows the risk level of a mutual fund scheme, with six levels: Low, Low to Moderate, Moderate, Moderately High, High and Very High. It is displayed on scheme documents so investors can match a scheme against their own risk appetite."
+    },
+    {
+      "id": "D05",
+      "scheme": null,
+      "topic": "riskometer_rules",
+      "source_id": "S22",
+      "keywords": "riskometer circular rules sebi product labelling disclosure monthly evaluated changed",
+      "answer": "SEBI's circular on Product Labeling in Mutual Fund schemes sets out how the Risk-o-meter is calculated and disclosed, including the requirement for AMCs to evaluate and disclose the risk level of each scheme monthly."
+    },
+    {
+      "id": "D06",
+      "scheme": null,
+      "topic": "elss_general",
+      "source_id": "S23",
+      "keywords": "elss general what is lock in three years 80c deduction 1.5 lakh tax saving shortest equity 80 percent",
+      "answer": "An ELSS is a tax-saving mutual fund that invests at least 80% of assets in equity under the Equity Linked Savings Scheme, 2005, and carries a 3-year lock-in, the shortest among Section 80C options. Investments of up to Rs. 1,50,000 in a financial year qualify for deduction under Section 80C of the Income-tax Act, 1961."
+    },
+    {
+      "id": "D07",
+      "scheme": null,
+      "topic": "capital_gains_statement",
+      "source_id": "S16",
+      "keywords": "capital gains statement download report tax mutual fund how to get itr filing app profile reports",
+      "answer": "On the Groww app, open your profile, go to the Reports section, and under 'Tax' choose 'Mutual Fund - Capital Gains', then select the financial year and tap Download. The statement is emailed to or downloaded from your registered account."
+    },
+    {
+      "id": "D08",
+      "scheme": null,
+      "topic": "elss_80c_proof",
+      "source_id": "S17",
+      "keywords": "80c proof tax proof elss investment proof statement download declaration employer",
+      "answer": "Groww provides an ELSS / Section 80C tax proof statement from the Reports section of your profile in the app. Select the relevant financial year to download it."
+    },
+    {
+      "id": "D09",
+      "scheme": null,
+      "topic": "cas_statement",
+      "source_id": "S18",
+      "keywords": "consolidated account statement cas all mutual funds across amcs single statement amfi download request",
+      "answer": "AMFI's Download CAS page links to the official routes for requesting a Consolidated Account Statement, which shows your mutual fund holdings across all AMCs in one document. The statement is delivered as a password-protected PDF."
+    },
+    {
+      "id": "D10",
+      "scheme": null,
+      "topic": "cas_rta",
+      "source_id": "S19",
+      "keywords": "cams kfintech rta registrar transfer agent consolidated account statement cas request portal holdings across amcs",
+      "answer": "CAMS and KFintech, the SEBI-registered registrars, each offer a Consolidated Account Statement request service on their investor portals. A CAS covers your holdings across all AMCs in a single document."
+    },
+    {
+      "id": "D11",
+      "scheme": null,
+      "topic": "factsheet",
+      "source_id": "S12",
+      "keywords": "factsheet fact sheet monthly download performance portfolio returns where find scheme details",
+      "answer": "Groww Mutual Fund publishes a monthly factsheet for all its schemes on its downloads page, covering scheme details, portfolio holdings and disclosed performance. This assistant does not compute or compare returns - use the official factsheet for those figures."
+    },
+    {
+      "id": "D12",
+      "scheme": null,
+      "topic": "scheme_documents",
+      "source_id": "S11",
+      "keywords": "sid scheme information document kim key information memorandum sai offer document where download read",
+      "answer": "Groww Mutual Fund publishes the Scheme Information Document (SID) for every scheme on its downloads page, with the Key Information Memorandum (KIM) and Statement of Additional Information (SAI) in adjacent sections. The SID is the authoritative document for a scheme's terms."
+    },
+    {
+      "id": "D13",
+      "scheme": null,
+      "topic": "nav",
+      "source_id": "S14",
+      "keywords": "nav net asset value latest today price current value per unit",
+      "answer": "The latest NAV for every Groww Mutual Fund scheme and plan is published daily on the AMC's NAV page. NAV changes every business day, so this assistant links to the live page rather than quoting a figure."
+    },
+    {
+      "id": "D14",
+      "scheme": null,
+      "topic": "portfolio_disclosure",
+      "source_id": "S15",
+      "keywords": "portfolio holdings disclosure stocks what does the fund hold fortnightly monthly statutory",
+      "answer": "Scheme portfolio disclosures for all Groww Mutual Fund schemes are published in the Statutory Disclosures section of the AMC website."
+    },
+    {
+      "id": "D15",
+      "scheme": null,
+      "topic": "plans_options",
+      "source_id": "S09",
+      "keywords": "plans options direct regular growth idcw dividend difference which plan available",
+      "answer": "Groww Mutual Fund schemes are offered under a Regular Plan and a Direct Plan, each with Growth and IDCW options. The Direct Plan carries a lower expense ratio because no distribution commission is charged under it."
+    },
+    {
+      "id": "D16",
+      "scheme": null,
+      "topic": "mf_central",
+      "source_id": "S20",
+      "keywords": "mf central mfcentral single window portfolio unclaimed dividend one place all mutual funds service request update details",
+      "answer": "MF Central, run by the registrars CAMS and KFintech in association with AMFI, gives investors a single window for their mutual fund portfolio, Consolidated Account Statement and unclaimed dividends."
+    },
+    {
+      "id": "D17",
+      "scheme": null,
+      "topic": "latest_factsheet",
+      "source_id": "S13",
+      "keywords": "latest monthly factsheet april 2026 one document riskometer portfolio holdings scheme details disclosed performance all schemes together",
+      "answer": "The latest monthly factsheet captured for this corpus is Groww Mutual Fund's April 2026 edition, which carries scheme details, riskometers, portfolio holdings and disclosed performance for every scheme in one document."
+    }
+  ],
+  "educational_links": {
+    "advice_refusal": {
+      "url": "https://investor.sebi.gov.in/riskometer.html",
+      "title": "SEBI Investor - Understanding the Riskometer",
+      "publisher": "SEBI Investor Website"
+    },
+    "elss_refusal": {
+      "url": "https://investor.sebi.gov.in/elss.html",
+      "title": "SEBI Investor - A Guide to ELSS",
+      "publisher": "SEBI Investor Website"
+    },
+    "performance_refusal": {
+      "url": "https://www.growwmf.in/downloads/fact-sheet",
+      "title": "Groww Mutual Fund - Monthly Factsheets",
+      "publisher": "Groww Mutual Fund (AMC)"
+    },
+    "fees_refusal": {
+      "url": "https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio",
+      "title": "AMFI Knowledge Center - Expense Ratio",
+      "publisher": "AMFI"
+    },
+    "pii_refusal": {
+      "url": "https://www.mfcentral.com/",
+      "title": "MF Central - single window for mutual fund investors",
+      "publisher": "CAMS + KFintech, in association with AMFI"
+    },
+    "no_answer": {
+      "url": "https://www.growwmf.in/downloads/sid",
+      "title": "Downloads - Scheme Information Documents",
+      "publisher": "Groww Mutual Fund (AMC)"
+    }
+  }
+}
