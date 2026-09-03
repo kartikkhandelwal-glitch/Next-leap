@@ -15,7 +15,8 @@ exit load, minimum SIP, benchmark, riskometer, ELSS lock-in, expense ratio, stat
 
 | Deliverable | Where |
 |---|---|
-| Working prototype | [`mf_faq/`](mf_faq/README.md) — `python3 -m app.server`, no dependencies |
+| Working prototype (hosted) | **[https://claude.ai/code/artifact/07fdc155-2183-4cd3-a28b-fdd8f32a6fb5](https://claude.ai/code/artifact/07fdc155-2183-4cd3-a28b-fdd8f32a6fb5)** — runs entirely in the browser |
+| Prototype source | [`mf_faq/`](mf_faq/README.md) — `python3 -m app.server`, no dependencies |
 | Source list (CSV + MD) | [`mf_faq/data/sources.csv`](mf_faq/data/sources.csv) · [`mf_faq/data/sources.md`](mf_faq/data/sources.md) |
 | README (setup, scope, known limits) | [`mf_faq/README.md`](mf_faq/README.md) |
 | Sample Q&A | [`mf_faq/data/sample_qa.md`](mf_faq/data/sample_qa.md) |
@@ -25,6 +26,7 @@ exit load, minimum SIP, benchmark, riskometer, ELSS lock-in, expense ratio, stat
 cd mf_faq
 python3 -m app.server                      # http://127.0.0.1:8000
 python3 -m unittest discover -s tests -v   # 26 tests
+python3 tools/parity_check.py              # hosted build vs. Python engine
 ```
 
 **Facts-only. No investment advice.**

@@ -1,0 +1,783 @@
+<title>Scheme Facts Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground:  #f2f5f4;
+    --surface: #ffffff;
+    --sunk:    #e9efed;
+    --ink:     #101d1c;
+    --muted:   #5a6b69;
+    --rule:    #d9e2e0;
+    --accent:  #0d6b60;
+    --flag:    #9c4a1c;
+    --flag-wash: #f8efe8;
+
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif: "IBM Plex Serif", ui-serif, Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:  #0d1312;
+      --surface: #151e1d;
+      --sunk:    #111a19;
+      --ink:     #e3eae8;
+      --muted:   #8ca09d;
+      --rule:    #24312f;
+      --accent:  #4fcfbb;
+      --flag:    #de9560;
+      --flag-wash: #211711;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:  #0d1312;
+    --surface: #151e1d;
+    --sunk:    #111a19;
+    --ink:     #e3eae8;
+    --muted:   #8ca09d;
+    --rule:    #24312f;
+    --accent:  #4fcfbb;
+    --flag:    #de9560;
+    --flag-wash: #211711;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 43rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead { display: flex; flex-direction: column; gap: .5rem; }
+  .masthead h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+  .masthead .lede { margin: 0; color: var(--muted); max-width: 34rem; }
+  .stamp-line {
+    display: inline-flex; align-self: flex-start; align-items: center; gap: .45rem;
+    margin-top: .15rem; padding: .28rem .6rem;
+    border: 1px solid var(--accent); border-radius: 2px;
+    font-family: var(--mono); font-size: .72rem; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+  }
+
+  /* ---- corpus spec strip ---- */
+
+  .spec {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+    gap: .1rem 1.25rem;
+    padding: .9rem 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    margin: 0;
+  }
+  .spec > div { display: flex; flex-direction: column; gap: .1rem; padding: .35rem 0; }
+  .spec dt {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .spec dd { margin: 0; font-size: .88rem; font-variant-numeric: tabular-nums; }
+
+  /* ---- examples ---- */
+
+  .examples { display: flex; flex-direction: column; gap: .45rem; }
+  .examples > p {
+    margin: 0 0 .1rem;
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .examples button {
+    text-align: left; padding: .6rem .8rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--surface); color: var(--ink);
+    font: inherit; font-size: .9rem; cursor: pointer;
+    transition: border-color .12s ease, color .12s ease;
+  }
+  .examples button:hover { border-color: var(--accent); color: var(--accent); }
+  .examples button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- thread ---- */
+
+  .thread { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .entry { display: flex; flex-direction: column; gap: .55rem; }
+  .entry.is-new { animation: rise .16s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(4px); } }
+  @media (prefers-reduced-motion: reduce) { .entry.is-new { animation: none; } }
+
+  .entry .q { margin: 0; font-weight: 600; font-size: .95rem; text-wrap: pretty; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1rem 1.1rem .85rem;
+    display: flex; flex-direction: column; gap: .8rem;
+  }
+  .entry[data-refused="yes"] .card {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-wash);
+  }
+
+  .verdict {
+    align-self: flex-start;
+    font-family: var(--mono); font-size: .67rem; font-weight: 500;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--flag);
+  }
+
+  .claim {
+    margin: 0;
+    font-family: var(--serif); font-size: 1.02rem; line-height: 1.6;
+  }
+
+  .ref { border-top: 1px solid var(--rule); padding-top: .7rem; font-size: .84rem; }
+  .ref-head { display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap; }
+  .ref .sid {
+    font-family: var(--mono); font-size: .72rem; font-weight: 500;
+    color: var(--muted); flex: none;
+  }
+  .ref a { color: var(--accent); text-decoration: none; }
+  .ref a:hover { text-decoration: underline; }
+  .ref a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .ref .pub { color: var(--muted); }
+  .ref .url {
+    font-family: var(--mono); font-size: .7rem; color: var(--muted);
+    margin-top: .25rem; overflow-wrap: anywhere;
+  }
+
+  .trace {
+    font-family: var(--mono); font-size: .68rem; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: .15rem .7rem;
+  }
+
+  /* ---- composer ---- */
+
+  .composer {
+    position: sticky; bottom: 0;
+    display: flex; gap: .5rem;
+    padding: .85rem 0 1rem;
+    background: linear-gradient(to bottom, transparent, var(--ground) 22%);
+  }
+  .composer input {
+    flex: 1; min-width: 0;
+    padding: .68rem .8rem;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--surface); color: var(--ink); font: inherit;
+  }
+  .composer input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .composer button {
+    padding: .68rem 1.15rem; border: 1px solid var(--accent); border-radius: 3px;
+    background: var(--accent); color: var(--surface);
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .composer button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  /* ---- appendix ---- */
+
+  .appendix { border-top: 1px solid var(--rule); padding-top: 1.1rem; }
+  .appendix summary {
+    cursor: pointer; font-family: var(--mono); font-size: .7rem;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+  }
+  .appendix summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .appendix h3 {
+    margin: 1.4rem 0 .5rem; font-size: .8rem; font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .appendix ol { margin: 0; padding: 0; list-style: none;
+                 display: flex; flex-direction: column; gap: .4rem; }
+  .appendix li { display: flex; gap: .55rem; font-size: .82rem; align-items: baseline; }
+  .appendix li .sid { font-family: var(--mono); font-size: .7rem; color: var(--muted); flex: none; }
+  .appendix li a { color: var(--accent); text-decoration: none; }
+  .appendix li a:hover { text-decoration: underline; }
+  .appendix li .kind { color: var(--muted); font-size: .74rem; }
+
+  footer {
+    border-top: 1px solid var(--rule); padding-top: 1.1rem;
+    font-size: .78rem; color: var(--muted);
+    display: flex; flex-direction: column; gap: .5rem;
+  }
+  footer strong { color: var(--ink); font-weight: 600; }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <h1>Scheme Facts Desk</h1>
+    <p class="lede">
+      Published facts about Groww Mutual Fund schemes &mdash; exit load, minimum SIP,
+      benchmark, riskometer, ELSS lock-in, expense ratio and statement downloads.
+      Every answer cites one official source.
+    </p>
+    <span class="stamp-line">Facts-only &middot; No investment advice</span>
+  </header>
+
+  <dl class="spec" id="spec"></dl>
+
+  <div class="examples">
+    <p>Try one</p>
+    <button type="button">What is the exit load of Groww Value Fund?</button>
+    <button type="button">What is the lock-in period for Groww ELSS Tax Saver Fund?</button>
+    <button type="button">How do I download my mutual fund capital gains statement?</button>
+  </div>
+
+  <div class="thread" id="thread" aria-live="polite"></div>
+
+  <form class="composer" id="composer">
+    <input type="text" id="q" autocomplete="off" spellcheck="false"
+           placeholder="e.g. Minimum SIP for Groww Large Cap Fund" aria-label="Your question">
+    <button type="submit">Ask</button>
+  </form>
+
+  <details class="appendix">
+    <summary id="appendix-summary">Corpus &mdash; every source this desk can cite</summary>
+    <div id="appendix-body"></div>
+  </details>
+
+  <footer>
+    <p style="margin:0">
+      <strong>Facts-only. No investment advice.</strong>
+      Opinion, portfolio and performance questions are declined by design, and no personal
+      or account data is accepted or stored. No expense-ratio or NAV figure is held in the
+      corpus &mdash; both are revised continuously, so those questions return the live
+      official disclosure page instead.
+    </p>
+    <p style="margin:0">
+      Student prototype built for a learning milestone. Not affiliated with, endorsed by, or
+      an official channel of Groww, Groww Mutual Fund, SEBI or AMFI. For anything concerning
+      your own investments, read the official scheme documents and consult a SEBI-registered
+      investment adviser.
+    </p>
+  </footer>
+
+</div>
+
+<script type="application/json" id="corpus-data">{"meta":{"product":"Groww","amc":"Groww Mutual Fund (Groww Asset Management Ltd.)","corpus_version":"1.0.0","last_updated_from_sources":"2026-09-03","scheme_scope":["Groww Large Cap Fund","Groww Value Fund","Groww ELSS Tax Saver Fund","Groww Nifty Total Market Index Fund"],"note":"Facts below were captured from the official pages listed in `sources`. Scheme terms (exit load, benchmark, minimums, lock-in) change only by addendum; TER and NAV change continuously and are therefore never hard-coded here - those questions are answered with the live official disclosure link. Re-run tools/refresh_corpus.py to re-capture from source."},"sources":[{"id":"S01","url":"https://www.growwmf.in/mutual-funds/groww-large-cap-fund-direct-growth","title":"Groww Large Cap Fund - Direct Growth (scheme page)","publisher":"Groww Mutual Fund (AMC)","doc_type":"Scheme page","captured_on":"2026-09-03"},{"id":"S02","url":"https://www.growwmf.in/mutual-funds/groww-value-discovery-fund-direct-growth","title":"Groww Value Fund - Direct Growth (scheme page)","publisher":"Groww Mutual Fund (AMC)","doc_type":"Scheme page","captured_on":"2026-09-03"},{"id":"S03","url":"https://www.growwmf.in/mutual-funds/groww-elss-tax-saver-fund-direct-growth","title":"Groww ELSS Tax Saver Fund - Direct Growth (scheme page)","publisher":"Groww Mutual Fund (AMC)","doc_type":"Scheme page","captured_on":"2026-09-03"},{"id":"S04","url":"https://www.growwmf.in/mutual-funds/groww-nifty-total-market-index-fund-direct-growth","title":"Groww Nifty Total Market Index Fund - Direct Growth (scheme page)","publisher":"Groww Mutual Fund (AMC)","doc_type":"Scheme page","captured_on":"2026-09-03"},{"id":"S05","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20Value%20Fund.pdf","title":"Scheme Information Document - Groww Value Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"SID","captured_on":"2026-09-03"},{"id":"S06","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20ELSS%20Tax%20Saver%20Fund.pdf","title":"Scheme Information Document - Groww ELSS Tax Saver Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"SID","captured_on":"2026-09-03"},{"id":"S07","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SID/SID_Groww%20Nifty%20Total%20Market%20Index%20Fund.pdf","title":"Scheme Information Document - Groww Nifty Total Market Index Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"SID","captured_on":"2026-09-03"},{"id":"S08","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/KIM/KIM_Groww%20ELSS%20Tax%20Saver%20Fund.pdf","title":"Key Information Memorandum - Groww ELSS Tax Saver Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"KIM","captured_on":"2026-09-03"},{"id":"S09","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/SSD/Groww%20Value%20Fund/GrowwValueFundSSD.pdf","title":"Scheme Summary Document - Groww Value Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"Scheme Summary Document","captured_on":"2026-09-03"},{"id":"S10","url":"https://www.growwmf.in/downloads/expense-ratio","title":"Expense Ratio (TER) disclosure - Groww Mutual Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"Fee/charges disclosure","captured_on":"2026-09-03"},{"id":"S11","url":"https://www.growwmf.in/downloads/sid","title":"Downloads - Scheme Information Documents","publisher":"Groww Mutual Fund (AMC)","doc_type":"Document index","captured_on":"2026-09-03"},{"id":"S12","url":"https://www.growwmf.in/downloads/fact-sheet","title":"Downloads - Monthly Factsheets","publisher":"Groww Mutual Fund (AMC)","doc_type":"Document index","captured_on":"2026-09-03"},{"id":"S13","url":"https://assets-netstorage.growwmf.in/compliance_docs/Downloads/Fact%20Sheet/2026%20-%202027/Monthly%20Factsheet%20-%20April%202026.pdf","title":"Monthly Factsheet - April 2026","publisher":"Groww Mutual Fund (AMC)","doc_type":"Factsheet","captured_on":"2026-09-03"},{"id":"S14","url":"https://www.growwmf.in/nav","title":"Latest NAV - Groww Mutual Fund","publisher":"Groww Mutual Fund (AMC)","doc_type":"NAV disclosure","captured_on":"2026-09-03"},{"id":"S15","url":"https://www.growwmf.in/statutory-disclosure/portfolio","title":"Statutory Disclosures - Scheme portfolios","publisher":"Groww Mutual Fund (AMC)","doc_type":"Statutory disclosure","captured_on":"2026-09-03"},{"id":"S16","url":"https://groww.in/help/mutual-funds/reports/how-to-download-capital-gain-report--50","title":"How to download capital gain report (Groww Help)","publisher":"Groww (platform)","doc_type":"Help / statement guide","captured_on":"2026-09-03"},{"id":"S17","url":"https://groww.in/help/my-account/ma-others/where-can-i-get-the-tax-proof-for-section-80c","title":"Where can I get the tax proof for Section 80C? (Groww Help)","publisher":"Groww (platform)","doc_type":"Help / statement guide","captured_on":"2026-09-03"},{"id":"S18","url":"https://www.amfiindia.com/online-center/download-cas","title":"Download Consolidated Account Statement (CAS)","publisher":"AMFI","doc_type":"Statement guide","captured_on":"2026-09-03"},{"id":"S19","url":"https://www.camsonline.com/Investors/Statements/Consolidated-Account-Statement","title":"Consolidated Account Statement","publisher":"CAMS (SEBI-registered RTA)","doc_type":"Statement guide","captured_on":"2026-09-03"},{"id":"S20","url":"https://www.mfcentral.com/","title":"MF Central - single window for mutual fund investors","publisher":"CAMS + KFintech, in association with AMFI","doc_type":"Statement guide","captured_on":"2026-09-03"},{"id":"S21","url":"https://investor.sebi.gov.in/riskometer.html","title":"Understanding the Riskometer","publisher":"SEBI Investor Website","doc_type":"Investor education","captured_on":"2026-09-03"},{"id":"S22","url":"https://www.sebi.gov.in/legal/circulars/oct-2020/circular-on-product-labeling-in-mutual-fund-schemes-risk-o-meter_47796.html","title":"Circular on Product Labeling in Mutual Fund schemes - Risk-o-meter","publisher":"SEBI","doc_type":"Circular","captured_on":"2026-09-03"},{"id":"S23","url":"https://investor.sebi.gov.in/elss.html","title":"A Guide to ELSS (Equity Linked Savings Scheme)","publisher":"SEBI Investor Website","doc_type":"Investor education","captured_on":"2026-09-03"},{"id":"S24","url":"https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio","title":"Expense Ratio - AMFI Knowledge Center","publisher":"AMFI","doc_type":"Investor education","captured_on":"2026-09-03"},{"id":"S25","url":"https://www.amfiindia.com/ter-of-mf-schemes","title":"Total Expense Ratio (TER) of Mutual Fund Schemes","publisher":"AMFI","doc_type":"Fee/charges disclosure","captured_on":"2026-09-03"}],"schemes":[{"id":"large_cap","name":"Groww Large Cap Fund","aliases":["groww large cap","groww largecap","large cap fund","largecap fund","groww bluechip","groww blue chip","large cap"]},{"id":"value","name":"Groww Value Fund","aliases":["groww value","value fund","groww value discovery","value discovery","value"]},{"id":"elss","name":"Groww ELSS Tax Saver Fund","aliases":["groww elss","elss tax saver","elss","tax saver","tax saving fund","80c fund","groww tax saver"]},{"id":"index","name":"Groww Nifty Total Market Index Fund","aliases":["nifty total market","total market index","total market","index fund"]}],"facts":[{"id":"F01","scheme":"large_cap","attribute":"exit_load","source_id":"S01","keywords":"exit load redemption charge redeem switch out penalty within days sell early","answer":"Groww Large Cap Fund charges an exit load of 1% if units are redeemed or switched out within 7 days from the date of allotment. There is no exit load if redeemed or switched out after 7 days."},{"id":"F02","scheme":"large_cap","attribute":"benchmark","source_id":"S01","keywords":"benchmark index tri compared against benchmarked","answer":"The benchmark for Groww Large Cap Fund is the NIFTY 100 - TRI (Total Return Index)."},{"id":"F03","scheme":"large_cap","attribute":"riskometer","source_id":"S01","keywords":"riskometer risk o meter risk level how risky scheme risk very high","answer":"The Scheme Riskometer for Groww Large Cap Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."},{"id":"F04","scheme":"large_cap","attribute":"minimum_investment","source_id":"S01","keywords":"minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees","answer":"The minimum SIP amount for Groww Large Cap Fund is Rs. 100 and the minimum lumpsum amount is also Rs. 100."},{"id":"F05","scheme":"large_cap","attribute":"category","source_id":"S01","keywords":"category type of scheme what kind open ended equity large cap classification","answer":"Groww Large Cap Fund is an open-ended equity scheme predominantly investing in large-cap stocks."},{"id":"F06","scheme":"value","attribute":"exit_load","source_id":"S05","keywords":"exit load redemption charge redeem switch out penalty within year sell early","answer":"Groww Value Fund charges an exit load of 1% if units are redeemed or switched out within 1 year from the date of allotment. There is no exit load if redeemed or switched out after 1 year."},{"id":"F07","scheme":"value","attribute":"benchmark","source_id":"S05","keywords":"benchmark index tri compared against benchmarked","answer":"The benchmark for Groww Value Fund is the NIFTY 500 - TRI (Total Return Index)."},{"id":"F08","scheme":"value","attribute":"riskometer","source_id":"S02","keywords":"riskometer risk o meter risk level how risky scheme risk very high","answer":"The Scheme Riskometer for Groww Value Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."},{"id":"F09","scheme":"value","attribute":"minimum_investment","source_id":"S05","keywords":"minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees","answer":"The minimum lumpsum application amount for Groww Value Fund is Rs. 500 and in multiples of Re. 1 thereafter. The minimum SIP amount is Rs. 500."},{"id":"F10","scheme":"value","attribute":"category","source_id":"S05","keywords":"category type of scheme what kind open ended equity value strategy classification","answer":"Groww Value Fund is an open-ended equity scheme following a value investment strategy."},{"id":"F11","scheme":"elss","attribute":"lock_in","source_id":"S06","keywords":"lock in lockin period how long locked cannot redeem three years 3 years withdraw before","answer":"Groww ELSS Tax Saver Fund has a statutory lock-in period of 3 years from the date of allotment of each unit. Units cannot be redeemed, switched or transferred during the lock-in."},{"id":"F12","scheme":"elss","attribute":"exit_load","source_id":"S06","keywords":"exit load redemption charge redeem switch out penalty nil","answer":"The exit load for Groww ELSS Tax Saver Fund is Nil. Because the scheme carries a 3-year statutory lock-in, units can only be redeemed after the lock-in and no exit load applies."},{"id":"F13","scheme":"elss","attribute":"benchmark","source_id":"S06","keywords":"benchmark index tri compared against benchmarked changed revised bse 500","answer":"The benchmark for Groww ELSS Tax Saver Fund is the NIFTY 500 - TRI (Total Return Index). It was revised from the BSE 500 TRI with effect from 30 June 2025."},{"id":"F14","scheme":"elss","attribute":"riskometer","source_id":"S03","keywords":"riskometer risk o meter risk level how risky scheme risk very high","answer":"The Scheme Riskometer for Groww ELSS Tax Saver Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."},{"id":"F15","scheme":"elss","attribute":"minimum_investment","source_id":"S06","keywords":"minimum sip amount minimum investment lumpsum lump sum smallest start with how much rupees 500","answer":"The minimum application amount for Groww ELSS Tax Saver Fund is Rs. 500 and in multiples of Rs. 500 thereafter. The minimum SIP amount is also Rs. 500."},{"id":"F16","scheme":"elss","attribute":"category","source_id":"S08","keywords":"category type of scheme what kind open ended equity linked savings scheme 80c tax classification","answer":"Groww ELSS Tax Saver Fund is an open-ended Equity Linked Savings Scheme (ELSS) with a statutory lock-in of 3 years and a tax benefit under Section 80C of the Income-tax Act, 1961."},{"id":"F17","scheme":"index","attribute":"exit_load","source_id":"S07","keywords":"exit load redemption charge redeem switch out penalty within days","answer":"Groww Nifty Total Market Index Fund charges an exit load of 0.25% if units are redeemed or switched out within 7 days from the date of allotment. There is no exit load after 7 days."},{"id":"F18","scheme":"index","attribute":"benchmark","source_id":"S07","keywords":"benchmark index tri compared against benchmarked tracks","answer":"Groww Nifty Total Market Index Fund is benchmarked to the Nifty Total Market Index - TRI, and the scheme seeks to track that index subject to tracking error."},{"id":"F19","scheme":"index","attribute":"riskometer","source_id":"S04","keywords":"riskometer risk o meter risk level how risky scheme risk very high","answer":"The Scheme Riskometer for Groww Nifty Total Market Index Fund is 'Very High'. The riskometer is reviewed and disclosed monthly, so check the scheme page or the latest factsheet for the current reading."},{"id":"F20","scheme":"index","attribute":"minimum_investment","source_id":"S07","keywords":"minimum sip amount minimum investment smallest start with how much rupees 100","answer":"The minimum SIP amount for Groww Nifty Total Market Index Fund is Rs. 100. The minimum lumpsum amount is stated in the scheme's SID, linked below."},{"id":"F21","scheme":"index","attribute":"category","source_id":"S07","keywords":"category type of scheme what kind open ended index fund passive classification","answer":"Groww Nifty Total Market Index Fund is an open-ended index scheme that seeks to achieve a return equivalent to the Nifty Total Market Index - TRI, subject to tracking error."}],"documents":[{"id":"D01","scheme":null,"topic":"expense_ratio","source_id":"S10","keywords":"expense ratio ter total expense ratio charges fee cost how much charged annual recurring direct regular plan","answer":"The Total Expense Ratio (TER) is the annual recurring cost charged to a scheme, expressed as a percentage of its assets and reflected in the NAV. Groww Mutual Fund publishes the current TER for every scheme and plan on its expense-ratio page, updated daily; because TER is revised from time to time, this assistant links you to the live figure rather than quoting one that may be stale."},{"id":"D02","scheme":null,"topic":"expense_ratio_all_amcs","source_id":"S25","keywords":"expense ratio ter all schemes amfi industry compare fee list disclosure","answer":"AMFI publishes the Total Expense Ratio of all mutual fund schemes across AMCs, which mutual funds are required to disclose on a daily basis. Use it as the industry-wide reference for a scheme's current TER."},{"id":"D03","scheme":null,"topic":"expense_ratio_rules","source_id":"S24","keywords":"expense ratio ter limit ter cap maximum limit highest slab slabs regulation 52 sebi rules how much can a scheme charge what is expense ratio meaning explain b30 daily net assets","answer":"The Total Expense Ratio is the annual recurring cost charged to a scheme, and the maximum a scheme may charge is capped by slabs under Regulation 52 of the SEBI (Mutual Funds) Regulations, based on daily net assets. For equity schemes the slabs start at 2.25% on the first Rs. 500 crore of daily net assets and step down as assets grow."},{"id":"D04","scheme":null,"topic":"riskometer_meaning","source_id":"S21","keywords":"what is riskometer meaning explain levels how many six low moderate high very high understand","answer":"The Riskometer is a pictorial scale that shows the risk level of a mutual fund scheme, with six levels: Low, Low to Moderate, Moderate, Moderately High, High and Very High. It is displayed on scheme documents so investors can match a scheme against their own risk appetite."},{"id":"D05","scheme":null,"topic":"riskometer_rules","source_id":"S22","keywords":"riskometer circular rules sebi product labelling disclosure monthly evaluated changed","answer":"SEBI's circular on Product Labeling in Mutual Fund schemes sets out how the Risk-o-meter is calculated and disclosed, including the requirement for AMCs to evaluate and disclose the risk level of each scheme monthly."},{"id":"D06","scheme":null,"topic":"elss_general","source_id":"S23","keywords":"elss general what is lock in three years 80c deduction 1.5 lakh tax saving shortest equity 80 percent","answer":"An ELSS is a tax-saving mutual fund that invests at least 80% of assets in equity under the Equity Linked Savings Scheme, 2005, and carries a 3-year lock-in, the shortest among Section 80C options. Investments of up to Rs. 1,50,000 in a financial year qualify for deduction under Section 80C of the Income-tax Act, 1961."},{"id":"D07","scheme":null,"topic":"capital_gains_statement","source_id":"S16","keywords":"capital gains statement download report tax mutual fund how to get itr filing app profile reports","answer":"On the Groww app, open your profile, go to the Reports section, and under 'Tax' choose 'Mutual Fund - Capital Gains', then select the financial year and tap Download. The statement is emailed to or downloaded from your registered account."},{"id":"D08","scheme":null,"topic":"elss_80c_proof","source_id":"S17","keywords":"80c proof tax proof elss investment proof statement download declaration employer","answer":"Groww provides an ELSS / Section 80C tax proof statement from the Reports section of your profile in the app. Select the relevant financial year to download it."},{"id":"D09","scheme":null,"topic":"cas_statement","source_id":"S18","keywords":"consolidated account statement cas all mutual funds across amcs single statement amfi download request","answer":"AMFI's Download CAS page links to the official routes for requesting a Consolidated Account Statement, which shows your mutual fund holdings across all AMCs in one document. The statement is delivered as a password-protected PDF."},{"id":"D10","scheme":null,"topic":"cas_rta","source_id":"S19","keywords":"cams kfintech rta registrar transfer agent consolidated account statement cas request portal holdings across amcs","answer":"CAMS and KFintech, the SEBI-registered registrars, each offer a Consolidated Account Statement request service on their investor portals. A CAS covers your holdings across all AMCs in a single document."},{"id":"D11","scheme":null,"topic":"factsheet","source_id":"S12","keywords":"factsheet fact sheet monthly download performance portfolio returns where find scheme details","answer":"Groww Mutual Fund publishes a monthly factsheet for all its schemes on its downloads page, covering scheme details, portfolio holdings and disclosed performance. This assistant does not compute or compare returns - use the official factsheet for those figures."},{"id":"D12","scheme":null,"topic":"scheme_documents","source_id":"S11","keywords":"sid scheme information document kim key information memorandum sai offer document where download read","answer":"Groww Mutual Fund publishes the Scheme Information Document (SID) for every scheme on its downloads page, with the Key Information Memorandum (KIM) and Statement of Additional Information (SAI) in adjacent sections. The SID is the authoritative document for a scheme's terms."},{"id":"D13","scheme":null,"topic":"nav","source_id":"S14","keywords":"nav net asset value latest today price current value per unit","answer":"The latest NAV for every Groww Mutual Fund scheme and plan is published daily on the AMC's NAV page. NAV changes every business day, so this assistant links to the live page rather than quoting a figure."},{"id":"D14","scheme":null,"topic":"portfolio_disclosure","source_id":"S15","keywords":"portfolio holdings disclosure stocks what does the fund hold fortnightly monthly statutory","answer":"Scheme portfolio disclosures for all Groww Mutual Fund schemes are published in the Statutory Disclosures section of the AMC website."},{"id":"D15","scheme":null,"topic":"plans_options","source_id":"S09","keywords":"plans options direct regular growth idcw dividend difference which plan available","answer":"Groww Mutual Fund schemes are offered under a Regular Plan and a Direct Plan, each with Growth and IDCW options. The Direct Plan carries a lower expense ratio because no distribution commission is charged under it."},{"id":"D16","scheme":null,"topic":"mf_central","source_id":"S20","keywords":"mf central mfcentral single window portfolio unclaimed dividend one place all mutual funds service request update details","answer":"MF Central, run by the registrars CAMS and KFintech in association with AMFI, gives investors a single window for their mutual fund portfolio, Consolidated Account Statement and unclaimed dividends."},{"id":"D17","scheme":null,"topic":"latest_factsheet","source_id":"S13","keywords":"latest monthly factsheet april 2026 one document riskometer portfolio holdings scheme details disclosed performance all schemes together","answer":"The latest monthly factsheet captured for this corpus is Groww Mutual Fund's April 2026 edition, which carries scheme details, riskometers, portfolio holdings and disclosed performance for every scheme in one document."}],"educational_links":{"advice_refusal":{"url":"https://investor.sebi.gov.in/riskometer.html","title":"SEBI Investor - Understanding the Riskometer","publisher":"SEBI Investor Website"},"elss_refusal":{"url":"https://investor.sebi.gov.in/elss.html","title":"SEBI Investor - A Guide to ELSS","publisher":"SEBI Investor Website"},"performance_refusal":{"url":"https://www.growwmf.in/downloads/fact-sheet","title":"Groww Mutual Fund - Monthly Factsheets","publisher":"Groww Mutual Fund (AMC)"},"fees_refusal":{"url":"https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio","title":"AMFI Knowledge Center - Expense Ratio","publisher":"AMFI"},"pii_refusal":{"url":"https://www.mfcentral.com/","title":"MF Central - single window for mutual fund investors","publisher":"CAMS + KFintech, in association with AMFI"},"no_answer":{"url":"https://www.growwmf.in/downloads/sid","title":"Downloads - Scheme Information Documents","publisher":"Groww Mutual Fund (AMC)"}}}</script>
+<script>/* Browser/Node port of app/retriever.py + app/guardrails.py + app/assistant.py.
+ *
+ * Kept deliberately literal so it stays checkable against the Python original:
+ * tools/parity_check.py runs both over the same questions and diffs the replies.
+ * Load a corpus with MFFaq.create(corpus) -> { ask(question) }.
+ */
+(function (root) {
+  "use strict";
+
+  /* ---------------------------------------------------------------- tokens */
+
+  var STOPWORDS = new Set([
+    "a", "an", "the", "is", "are", "was", "were", "of", "for", "to", "in", "on",
+    "at", "by", "and", "or", "it", "its", "this", "that", "what", "whats", "which",
+    "how", "do", "does", "did", "i", "me", "my", "you", "your", "can", "will",
+    "be", "have", "has", "there", "any", "much", "many", "please", "tell", "about",
+    "fund", "scheme", "groww", "mutual", "funds"
+  ]);
+
+  function stem(word) {
+    var suffixes = ["ies", "es", "s"];
+    for (var i = 0; i < suffixes.length; i++) {
+      if (word.length > 4 && word.endsWith(suffixes[i])) {
+        return word.slice(0, word.length - suffixes[i].length);
+      }
+    }
+    return word;
+  }
+
+  function tokenize(text, keepStopwords) {
+    var words = String(text).toLowerCase().match(/[a-z0-9]+/g) || [];
+    var out = [];
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i];
+      if (word.length < 2) continue;
+      var root = stem(word);
+      if (!keepStopwords && (STOPWORDS.has(word) || STOPWORDS.has(root))) continue;
+      out.push(root);
+    }
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ bm25 */
+
+  var K1 = 1.5, B = 0.75;
+
+  function buildIndex(passages) {
+    var docs = passages.map(function (p) { return tokenize(p.text); });
+    var lengths = docs.map(function (d) { return d.length; });
+    var total = lengths.reduce(function (a, b) { return a + b; }, 0);
+    var avgLen = docs.length ? total / docs.length : 0;
+
+    var tfs = docs.map(function (doc) {
+      var counts = new Map();
+      doc.forEach(function (term) { counts.set(term, (counts.get(term) || 0) + 1); });
+      return counts;
+    });
+
+    var df = new Map();
+    docs.forEach(function (doc) {
+      new Set(doc).forEach(function (term) { df.set(term, (df.get(term) || 0) + 1); });
+    });
+
+    var n = docs.length;
+    var idf = new Map();
+    df.forEach(function (freq, term) {
+      idf.set(term, Math.log(1 + (n - freq + 0.5) / (freq + 0.5)));
+    });
+
+    function score(terms, i) {
+      var tf = tfs[i], length = lengths[i], sum = 0;
+      for (var t = 0; t < terms.length; t++) {
+        var freq = tf.get(terms[t]);
+        if (!freq) continue;
+        var denom = freq + K1 * (1 - B + B * length / (avgLen || 1));
+        sum += (idf.get(terms[t]) || 0) * freq * (K1 + 1) / denom;
+      }
+      return sum;
+    }
+
+    return function search(query, topK, allowedIds) {
+      var terms = tokenize(query);
+      if (!terms.length) return [];
+      var hits = [];
+      for (var i = 0; i < passages.length; i++) {
+        if (allowedIds && !allowedIds.has(passages[i].id)) continue;
+        var s = score(terms, i);
+        if (s > 0) hits.push({ passage: passages[i], score: s });
+      }
+      hits.sort(function (a, b) { return b.score - a.score; });
+      return hits.slice(0, topK);
+    };
+  }
+
+  /* ------------------------------------------------------------ guardrails */
+
+  var REDACTION = "[redacted]";
+
+  // Most-specific first, so PAN is not swallowed by a generic alphanumeric rule.
+  var PII_PATTERNS = [
+    { label: "PAN", re: /\b[A-Z]{5}[0-9]{4}[A-Z]\b/gi },
+    { label: "Aadhaar", re: /\b[2-9][0-9]{3}[ -]?[0-9]{4}[ -]?[0-9]{4}\b/g },
+    { label: "email address", re: /\b[\w.+-]+@[\w-]+\.[\w.]{2,}\b/g },
+    // Indian mobile numbers, tolerating the common "+91 98765 43210" grouping.
+    { label: "phone number", re: /(?:\+?91[ -]?)?\b[6-9][0-9]{4}[ -]?[0-9]{5}\b/g },
+    { label: "OTP", re: /\botp\b[^0-9]{0,20}[0-9]{4,8}\b/gi },
+    { label: "folio or account number", re: /\b(?:folio|account|a\/c|acct)\D{0,10}[0-9]{6,18}\b/gi },
+    { label: "bank account number", re: /\b[0-9]{9,18}\b/g }
+  ];
+
+  function scanAndRedact(text) {
+    var found = [], redacted = String(text);
+    PII_PATTERNS.forEach(function (rule) {
+      if (redacted.match(rule.re)) {
+        found.push(rule.label);
+        redacted = redacted.replace(rule.re, REDACTION);
+      }
+    });
+    return { text: redacted, found: found };
+  }
+
+  var ADVICE = new RegExp(
+    "\\b(should i|shall i|should we|can you recommend|do you recommend|recommend me|" +
+    "suggest me|which (?:one |fund |scheme )?(?:is |should )?(?:the )?(?:better|best|good)|" +
+    "is it (?:a )?(?:good|bad|safe|wise|worth)|worth (?:buying|investing|it)|" +
+    "(?:good|bad|safe|right|suitable|okay|ok|fine) (?:choice |option |pick |bet )?for (?:me|my)\\b|" +
+    "suits? me|suitable for me|" +
+    "advise|advice|what should i (?:do|buy|pick|choose)|" +
+    "(?:buy|sell|switch|exit|redeem|hold|invest in) (?:or|now|it|this|that)\\b|" +
+    "help me (?:choose|pick|decide|build)|" +
+    "(?:my|build a|review my|rebalance) portfolio|asset allocation for me|" +
+    "how much should i (?:invest|put)|" +
+    "will (?:it|this|the fund) (?:go up|grow|give|beat|outperform)|" +
+    "(?:good|best) (?:fund|scheme)s? (?:to|for) (?:buy|invest))\\b", "i");
+
+  var PERFORMANCE = new RegExp(
+    "\\b(returns?|cagr|xirr|performance|how much (?:will|would|did) i (?:get|make|earn)|" +
+    "profit|gain[s]? (?:will|would)|compare (?:the )?(?:returns|performance)|" +
+    "(?:1|3|5|ten|10)[ -]?(?:year|yr) (?:return|performance)|past performance|" +
+    "which (?:fund|scheme) (?:gave|has given|performed))\\b", "i");
+
+  var GREETING = /^\s*(hi|hey|hello|namaste|thanks|thank you|ok|okay)\b[\s!.?]*$/i;
+
+  function classify(text) {
+    if (GREETING.test(text)) return "greeting";
+    if (ADVICE.test(text)) return "advice";
+    if (PERFORMANCE.test(text)) return "performance";
+    return "fact";
+  }
+
+  /* ------------------------------------------------------------- assistant */
+
+  var DISCLAIMER = "Facts-only. No investment advice.";
+  var SCORE_FLOOR = 1.2;
+
+  var OTHER_AMCS = [
+    "sbi", "hdfc", "icici", "prudential", "axis", "nippon", "kotak", "uti",
+    "mirae", "quant", "parag parikh", "ppfas", "dsp", "franklin", "templeton",
+    "aditya birla", "birla", "canara", "robeco", "edelweiss", "motilal",
+    "tata", "bandhan", "idfc", "invesco", "jm financial", "lic mf", "sundaram",
+    "zerodha", "navi", "bajaj finserv", "whiteoak", "white oak", "360 one",
+    "helios", "samco", "union mutual", "baroda", "bnp", "mahindra", "pgim",
+    "shriram", "taurus", "trust mutual", "quantum", "indiabulls", "iti mutual",
+    "angel one", "jio blackrock", "blackrock", "nj mutual", "old bridge",
+    "unifi", "capitalmind", "choice mutual"
+  ];
+
+  var OTHER_AMC_RE = new RegExp(
+    "\\b(" + OTHER_AMCS.map(function (n) {
+      return n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }).join("|") + ")\\b", "i");
+
+  var SCHEME_ATTRIBUTE_RE = new RegExp(
+    "\\b(exit load|lock[ -]?in|minimum|min\\.? ?sip|lumpsum|lump sum|benchmark|" +
+    "riskometer|risk[ -]?o[ -]?meter|category)\\b", "i");
+
+  function create(corpus) {
+    var meta = corpus.meta;
+    var links = corpus.educational_links;
+
+    var sources = {};
+    corpus.sources.forEach(function (s) { sources[s.id] = s; });
+    var schemes = {};
+    corpus.schemes.forEach(function (s) { schemes[s.id] = s; });
+
+    var passages = [];
+    corpus.facts.forEach(function (fact) {
+      var scheme = schemes[fact.scheme];
+      passages.push({
+        id: fact.id, kind: "fact", scheme: fact.scheme,
+        attribute: fact.attribute, answer: fact.answer, source_id: fact.source_id,
+        text: [scheme.name, scheme.aliases.join(" "),
+               fact.attribute.replace(/_/g, " "), fact.keywords, fact.answer].join(" ")
+      });
+    });
+    corpus.documents.forEach(function (doc) {
+      passages.push({
+        id: doc.id, kind: "document", scheme: null,
+        attribute: doc.topic, answer: doc.answer, source_id: doc.source_id,
+        text: [doc.topic.replace(/_/g, " "), doc.keywords, doc.answer].join(" ")
+      });
+    });
+
+    var search = buildIndex(passages);
+
+    // Longest aliases first, so "groww nifty total market index fund" is not
+    // matched by the shorter "index fund".
+    var aliasMap = [];
+    corpus.schemes.forEach(function (scheme) {
+      [scheme.name].concat(scheme.aliases).forEach(function (alias) {
+        aliasMap.push({ alias: alias.toLowerCase(), id: scheme.id });
+      });
+    });
+    aliasMap.sort(function (a, b) { return b.alias.length - a.alias.length; });
+
+    // Tokens that merely name a scheme; a passage matching only these has not
+    // answered the attribute that was actually asked about.
+    var schemeTokens = new Set();
+    aliasMap.forEach(function (entry) {
+      tokenize(entry.alias, true).forEach(function (t) { schemeTokens.add(t); });
+    });
+
+    var schemeNames = corpus.schemes.map(function (s) { return s.name; });
+
+    function resolveScheme(text) {
+      var lowered = (" " + String(text).toLowerCase().replace(/[^a-z0-9 ]+/g, " ") + " ")
+        .replace(/\s+/g, " ");
+      for (var i = 0; i < aliasMap.length; i++) {
+        if (lowered.indexOf(" " + aliasMap[i].alias + " ") !== -1) return aliasMap[i].id;
+      }
+      return null;
+    }
+
+    function answersTheQuestion(question, passage) {
+      var topic = tokenize(question).filter(function (t) { return !schemeTokens.has(t); });
+      if (!topic.length) return true;
+      var terms = new Set(tokenize(passage.text));
+      return topic.some(function (t) { return terms.has(t); });
+    }
+
+    function cite(sourceId) {
+      var s = sources[sourceId];
+      return { url: s.url, title: s.title, publisher: s.publisher, source_id: s.id };
+    }
+
+    function reply(answer, citation, extra) {
+      var out = {
+        answer: answer,
+        citation: citation,
+        last_updated_from_sources: meta.last_updated_from_sources,
+        disclaimer: DISCLAIMER
+      };
+      Object.keys(extra || {}).forEach(function (k) { out[k] = extra[k]; });
+      return out;
+    }
+
+    function linkOf(name) {
+      var link = links[name];
+      var match = corpus.sources.filter(function (s) { return s.url === link.url; })[0];
+      return {
+        url: link.url, title: link.title, publisher: link.publisher,
+        source_id: match ? match.id : null
+      };
+    }
+
+    function noAnswer(question, schemeId) {
+      var inScope = schemeNames.join(", ");
+      var answer;
+      if (schemeId === null && SCHEME_ATTRIBUTE_RE.test(question)) {
+        answer = "Which scheme do you mean? That fact is per-scheme, and I cover four: "
+          + inScope + ".";
+      } else if (schemeId === null && /\bfund\b|\bscheme\b|\bamc\b/i.test(question)) {
+        answer = "That scheme isn't in this assistant's corpus. I cover four Groww Mutual "
+          + "Fund schemes: " + inScope + ". Ask me about one of those and I'll cite the "
+          + "official page.";
+      } else {
+        answer = "I don't have that fact in my corpus, so I won't guess. I can answer exit "
+          + "load, minimum SIP or lumpsum, benchmark, riskometer, scheme category, ELSS "
+          + "lock-in, expense ratio and statement downloads for: " + inScope + ".";
+      }
+      return reply(answer, linkOf("no_answer"), { intent: "no_answer" });
+    }
+
+    function ask(question) {
+      question = String(question == null ? "" : question).trim();
+
+      if (!question) {
+        return reply(
+          "Ask me a factual question about a Groww Mutual Fund scheme - for example its "
+          + "exit load, minimum SIP, benchmark, riskometer or lock-in.",
+          linkOf("advice_refusal"), { intent: "empty" });
+      }
+
+      // 1. PII gate. The raw question is dropped here and never indexed or stored.
+      var scan = scanAndRedact(question);
+      if (scan.found.length) {
+        return reply(
+          "I can't accept personal or account details, so I've discarded what you sent and "
+          + "detected " + scan.found.join(", ") + " in it. Ask me about a scheme's published "
+          + "facts instead - for example \"What is the exit load of Groww Value Fund?\" For "
+          + "anything tied to your own folio, use the official investor channels.",
+          linkOf("pii_refusal"), { intent: "pii_refusal", pii_detected: scan.found });
+      }
+      var safe = scan.text;
+
+      // 2. Opinion / performance gates.
+      var intent = classify(safe);
+
+      if (intent === "greeting") {
+        return reply(
+          "Hello. I answer published facts about Groww Mutual Fund schemes - exit load, "
+          + "minimum SIP, benchmark, riskometer, ELSS lock-in, expense ratio and statement "
+          + "downloads. Try: \"What is the exit load of Groww Value Fund?\"",
+          linkOf("advice_refusal"), { intent: "greeting" });
+      }
+
+      if (intent === "advice") {
+        var adviceLink = resolveScheme(safe) === "elss" ? "elss_refusal" : "advice_refusal";
+        return reply(
+          "I can only share published facts, so I can't tell you whether to buy, sell, hold "
+          + "or switch - that call depends on your own goals and is one for a SEBI-registered "
+          + "investment adviser. I'm happy to give you the scheme's exit load, minimum SIP, "
+          + "benchmark, riskometer or lock-in instead.",
+          linkOf(adviceLink), { intent: "advice_refusal" });
+      }
+
+      if (intent === "performance") {
+        return reply(
+          "I don't compute or compare returns, and I don't make performance claims. Groww "
+          + "Mutual Fund publishes disclosed performance for every scheme in its monthly "
+          + "factsheet, linked below. Ask me a scheme fact - exit load, minimum SIP, "
+          + "benchmark, riskometer or lock-in - and I'll answer that.",
+          linkOf("performance_refusal"), { intent: "performance_refusal" });
+      }
+
+      // 3. Scope gate, before alias matching.
+      var otherAmc = safe.match(OTHER_AMC_RE);
+      if (otherAmc) {
+        return reply(
+          "That fund house isn't in this assistant's corpus - I only cover four Groww Mutual "
+          + "Fund schemes: " + schemeNames.join(", ") + ". Ask me about one of those, or look "
+          + "the other scheme up in its own AMC's Scheme Information Document.",
+          linkOf("no_answer"), { intent: "out_of_scope", out_of_scope: otherAmc[1] });
+      }
+
+      var schemeId = resolveScheme(safe);
+
+      var allowed = new Set();
+      passages.forEach(function (p) {
+        if (schemeId ? (p.scheme === schemeId || p.scheme === null) : p.scheme === null) {
+          allowed.add(p.id);
+        }
+      });
+
+      var hits = search(safe, 3, allowed).filter(function (hit) {
+        return answersTheQuestion(safe, hit.passage);
+      });
+
+      if (!hits.length || hits[0].score < SCORE_FLOOR) return noAnswer(safe, schemeId);
+
+      var passage = hits[0].passage;
+      return reply(passage.answer, cite(passage.source_id), {
+        intent: "fact",
+        matched: passage.id,
+        attribute: passage.attribute,
+        scheme: passage.scheme ? schemes[passage.scheme].name : null,
+        score: Math.round(hits[0].score * 1000) / 1000
+      });
+    }
+
+    return {
+      ask: ask,
+      meta: meta,
+      sources: corpus.sources,
+      schemes: corpus.schemes,
+      schemeNames: schemeNames,
+      passageCount: passages.length,
+      DISCLAIMER: DISCLAIMER
+    };
+  }
+
+  var api = { create: create, tokenize: tokenize, scanAndRedact: scanAndRedact, classify: classify };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.MFFaq = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+
+  var corpus = JSON.parse(document.getElementById("corpus-data").textContent);
+  var desk = window.MFFaq.create(corpus);
+
+  var thread = document.getElementById("thread");
+  var input = document.getElementById("q");
+
+  /* ---- corpus header strip ---- */
+
+  var spec = [
+    ["Fund house", corpus.meta.amc.replace(/\s*\(.*\)$/, "")],
+    ["Schemes", String(desk.schemeNames.length)],
+    ["Official sources", String(desk.sources.length)],
+    ["Indexed passages", String(desk.passageCount)],
+    ["Corpus as of", corpus.meta.last_updated_from_sources]
+  ];
+  document.getElementById("spec").innerHTML = spec.map(function (row) {
+    return "<div><dt>" + esc(row[0]) + "</dt><dd>" + esc(row[1]) + "</dd></div>";
+  }).join("");
+
+  /* ---- corpus appendix ---- */
+
+  var byPublisher = {};
+  desk.sources.forEach(function (s) {
+    (byPublisher[s.publisher] = byPublisher[s.publisher] || []).push(s);
+  });
+  document.getElementById("appendix-body").innerHTML =
+    Object.keys(byPublisher).sort().map(function (publisher) {
+      return "<h3>" + esc(publisher) + "</h3><ol>" +
+        byPublisher[publisher].map(function (s) {
+          return '<li><span class="sid">' + esc(s.id) + "</span>" +
+            '<span><a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(s.title) + "</a> " +
+            '<span class="kind">' + esc(s.doc_type) + "</span></span></li>";
+        }).join("") + "</ol>";
+    }).join("");
+  document.getElementById("appendix-summary").textContent =
+    "Corpus — all " + desk.sources.length + " sources this desk can cite";
+
+  /* ---- rendering ---- */
+
+  var VERDICTS = {
+    advice_refusal:      "Declined — opinion",
+    performance_refusal: "Declined — performance",
+    pii_refusal:         "Declined — personal data",
+    out_of_scope:        "Outside corpus scope",
+    no_answer:           "Not in corpus"
+  };
+
+  function esc(text) {
+    return String(text).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function render(question, reply, animate) {
+    var refused = !!VERDICTS[reply.intent];
+    var c = reply.citation;
+
+    var trace = ["Last updated from sources: " + reply.last_updated_from_sources];
+    if (reply.matched) trace.push("passage " + reply.matched);
+    if (typeof reply.score === "number") trace.push("bm25 " + reply.score.toFixed(2));
+
+    var html =
+      '<p class="q">' + esc(question) + "</p>" +
+      '<div class="card">' +
+        (refused ? '<span class="verdict">' + esc(VERDICTS[reply.intent]) + "</span>" : "") +
+        '<p class="claim">' + esc(reply.answer) + "</p>" +
+        '<div class="ref"><div class="ref-head">' +
+          '<span class="sid">' + esc(c.source_id || (refused ? "REF" : "SRC")) + "</span>" +
+          '<span><a href="' + esc(c.url) + '" target="_blank" rel="noopener noreferrer">' +
+          esc(c.title) + '</a> <span class="pub">— ' + esc(c.publisher) + "</span></span>" +
+        '</div><div class="url">' + esc(c.url) + "</div></div>" +
+        '<div class="trace">' + trace.map(function (t) {
+          return "<span>" + esc(t) + "</span>";
+        }).join("") + "</div>" +
+      "</div>";
+
+    var entry = document.createElement("article");
+    entry.className = "entry" + (animate ? " is-new" : "");
+    entry.setAttribute("data-intent", reply.intent || "fact");
+    entry.setAttribute("data-refused", refused ? "yes" : "no");
+    entry.innerHTML = html;
+    thread.appendChild(entry);
+    return entry;
+  }
+
+  function ask(question, animate) {
+    if (!question.trim()) return;
+    var entry = render(question, desk.ask(question), animate !== false);
+    input.value = "";
+    if (animate !== false) entry.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  document.getElementById("composer").addEventListener("submit", function (event) {
+    event.preventDefault();
+    ask(input.value);
+    input.focus();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".examples button"), function (button) {
+    button.addEventListener("click", function () { ask(button.textContent.trim()); });
+  });
+
+  // Open in a working state: one answered fact and one refusal, so the first
+  // frame shows both halves of what this desk does.
+  ask("What is the minimum SIP for Groww Large Cap Fund?", false);
+  ask("Should I buy Groww Value Fund?", false);
+})();
+</script>

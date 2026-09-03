@@ -8,13 +8,18 @@ personal or account data.
 
 Product chosen for this milestone (and the next LIP challenge): **Groww**.
 
+**Hosted prototype: https://claude.ai/code/artifact/07fdc155-2183-4cd3-a28b-fdd8f32a6fb5** — the whole assistant, running client-side in one
+self-contained page. No install, no server.
+
 ![Prototype UI](docs/ui.png)
 
 ---
 
 ## Run it
 
-No dependencies. Python 3.8+.
+**Hosted:** [https://claude.ai/code/artifact/07fdc155-2183-4cd3-a28b-fdd8f32a6fb5](https://claude.ai/code/artifact/07fdc155-2183-4cd3-a28b-fdd8f32a6fb5) — nothing to install.
+
+**Locally**, no dependencies, Python 3.8+.
 
 ```bash
 cd mf_faq
@@ -144,10 +149,16 @@ mf_faq/
 │   ├── sources.csv      generated
 │   ├── sources.md       generated
 │   └── sample_qa.md     generated
+├── web/
+│   ├── engine.js           browser/Node port of the retriever + guardrails + pipeline
+│   └── page.template.html  hosted single-page UI
+├── dist/index.html         built standalone page (generated)
 ├── tools/
 │   ├── refresh_corpus.py   re-check every source URL, archive, re-stamp
 │   ├── export_sources.py   regenerate sources.csv / sources.md
-│   └── export_sample_qa.py regenerate sample_qa.md
+│   ├── export_sample_qa.py regenerate sample_qa.md
+│   ├── build_page.py       inline corpus + engine -> dist/index.html
+│   └── parity_check.py     diff the JS engine against the Python one
 ├── tests/test_assistant.py
 ├── cli.py
 └── DISCLAIMER.md
@@ -158,6 +169,23 @@ file; the source list, the sample Q&A and the UI's scope footer all derive from 
 
 ---
 
+## The hosted build
+
+`dist/index.html` is one self-contained file: the corpus, the BM25 retriever, the guardrails
+and the UI, with no backend and no network calls of its own beyond the font stylesheet. It is
+generated, never hand-edited:
+
+```bash
+python3 tools/build_page.py      # web/page.template.html + engine.js + corpus.json -> dist/
+python3 tools/parity_check.py    # 62 questions through both engines, diffed field by field
+```
+
+Two engines answering the same questions is a correctness risk, so `parity_check.py` runs the
+Python and JavaScript pipelines over the same question bank and diffs every field — answer,
+intent, matched passage, citation and BM25 score. It currently reports **62/62 identical**. A
+port that silently drifts from the tested implementation would undermine the whole point of a
+grounded assistant, so treat a parity failure as a build failure.
+
 ## Refreshing the corpus
 
 ```bash
@@ -166,7 +194,9 @@ python3 tools/refresh_corpus.py --save ./archive # archive each page/PDF
 python3 tools/refresh_corpus.py --stamp          # re-stamp the "as of" date
 python3 tools/export_sources.py
 python3 tools/export_sample_qa.py
+python3 tools/build_page.py
 python3 -m unittest discover -s tests
+python3 tools/parity_check.py
 ```
 
 The refresh tool does the mechanical half — confirming URLs resolve and archiving copies. **A
